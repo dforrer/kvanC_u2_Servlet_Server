@@ -39,6 +39,16 @@ public class Server extends HttpServlet {
 		//----------------------------------
 		// Parsing Query Params
 
+		/*
+		 * "?action=addParticipant&name=<Name >" 
+		 * "?action=removeParticipant&name=<Name >" 
+		 * "?action=addTopic&topic=<Thema>"
+		 * "?action=removeTopic&topic=<Thema>"
+		 * "?action=postMessage&message=<Nachricht>&topic=<Thema>"
+		 * ￼"?action=getMessages&topic=<Thema>"
+		 * "?action=refresh&topic=<Thema>"
+		 */
+		
 		Map<String, String[]> queryMap = request.getParameterMap();
 		for (Map.Entry<String, String[]> entry : queryMap.entrySet())
 		{
@@ -60,7 +70,7 @@ public class Server extends HttpServlet {
 		out.println("<title>Test</title>");
 		out.println("</head>");
 		out.println("<body bgcolor=\"white\">");
-		out.println("<h1>Hello World_5e_Testen ist schön... <br /><span style=\"color:red;\">Fehler suchen noch schöner.. *g*</span></h1>");
+		out.println("<h1>Hello World_5f_Testen ist schön... <br /><span style=\"color:red;\">Fehler suchen noch schöner.. *g*</span></h1>");
 		out.println("</body>");
 		out.println("</html>");
 	}
