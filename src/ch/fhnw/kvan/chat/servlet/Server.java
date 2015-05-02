@@ -93,6 +93,11 @@ public class Server extends HttpServlet {
 		 * ￼"?action=getMessages & topic=<Thema>" ￼"?action=getTopics"
 		 * "?action=getParticipants"
 		 */
+		
+		// MIME-Typ der Antwort bestimmen
+		response.setContentType("text/html");
+		response.setCharacterEncoding("UTF-8");
+		
 		boolean rv;
 
 		switch (action) {
@@ -118,9 +123,7 @@ public class Server extends HttpServlet {
 		case "getMessages": {
 			// response-format: "messages=Meldung1;Meldung2;"
 
-			// MIME-Typ der Antwort bestimmen
-			response.setContentType("text/html");
-
+			
 			// Writer holen
 			PrintWriter out = response.getWriter();
 
