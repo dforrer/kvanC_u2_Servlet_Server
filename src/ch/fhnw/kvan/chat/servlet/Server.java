@@ -23,11 +23,14 @@ import ch.fhnw.kvan.chat.general.ChatRoom;
 public class Server extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	private ChatRoom cr;
+
 	/**
 	 * Default constructor.
 	 */
 	public Server() {
-		// TODO Auto-generated constructor stub
+		System.out.println("Server-Constructor called.");
+		cr = ChatRoom.getInstance();
 	}
 
 	/**
@@ -36,8 +39,6 @@ public class Server extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
-		ChatRoom cr = ChatRoom.getInstance();
 
 		String query = request.getQueryString();
 		System.out.println("query:" + query);
@@ -51,7 +52,7 @@ public class Server extends HttpServlet {
 		 * "?action=addTopic & topic=<Thema>"
 		 * "?action=removeTopic & topic=<Thema>"
 		 * "?action=postMessage & message=<Nachricht> & topic=<Thema>"
-		 * ￼"?action=getMessages & topic=<Thema>"
+		 * ￼"?action=getMessages & topic=<Thema>" ￼"?action=getTopics"
 		 * "?action=refresh & topic=<Thema>"
 		 */
 
@@ -89,15 +90,19 @@ public class Server extends HttpServlet {
 		 * "?action=addTopic & topic=<Thema>"
 		 * "?action=removeTopic & topic=<Thema>"
 		 * "?action=postMessage & message=<Nachricht> & topic=<Thema>"
-		 * ￼"?action=getMessages & topic=<Thema>"
-		 * "?action=refresh & topic=<Thema>"
+		 * ￼"?action=getMessages & topic=<Thema>" ￼"?action=getTopics"
+		 * "?action=getParticipants"
 		 */
+		boolean rv;
+
 		switch (action) {
 		case "addParticipant":
-			cr.addParticipant(name); // Add client to model
+			rv = cr.addParticipant(name); // Add client to model
+			System.out.println("addParticipant worked: " + rv);
 			break;
 		case "removeParticipant":
-			cr.removeParticipant(name); // Remove client from model
+			rv = cr.removeParticipant(name); // Remove client from model
+			System.out.println("removeParticipant worked: " + rv);
 			break;
 		case "addTopic":
 			cr.addTopic(topic); // add topic to chatroom-model
@@ -110,7 +115,9 @@ public class Server extends HttpServlet {
 			message = dateFormat.format(new Date()) + " " + message;
 			cr.addMessage(topic, message);
 			break;
-		case "getMessages":
+		case "getMessages": {
+			// response-format: "messages=Meldung1;Meldung2;"
+
 			// MIME-Typ der Antwort bestimmen
 			response.setContentType("text/html");
 
@@ -121,42 +128,48 @@ public class Server extends HttpServlet {
 			out.println(cr.getMessages(topic));
 
 			break;
-		case "refresh":
+		}
+		case "getTopics": {
 			// MIME-Typ der Antwort bestimmen
 			response.setContentType("text/html");
 
 			// Writer holen
-			PrintWriter out2 = response.getWriter();
+			PrintWriter out = response.getWriter();
 
 			// Messages ausgeben
-			out2.println(cr.getMessages(topic));
-			out2.println(cr.getParticipants());
-			out2.println(cr.getTopics());
+			out.println(cr.getTopics());
 
 			break;
+		}
+		case "getParticipants": {
+			// MIME-Typ der Antwort bestimmen
+			response.setContentType("text/html");
+
+			// Writer holen
+			PrintWriter out = response.getWriter();
+
+			// Messages ausgeben
+			out.println(cr.getParticipants());
+
+			break;
+		}
 		default:
 			response.setStatus(404);
 		}
-/*
-		// ----------------------------------
-		// Output Response
-
-		// MIME-Typ der Antwort bestimmen
-		response.setContentType("text/html");
-
-		// Writer holen
-		PrintWriter out = response.getWriter();
-
-		// HTML-Seite ausgeben
-		out.println("<html>");
-		out.println("<head>");
-		out.println("<title>Test</title>");
-		out.println("</head>");
-		out.println("<body bgcolor=\"white\">");
-		out.println("<h1>Hello World_5f_Testen ist schön... <br /><span style=\"color:red;\">Fehler suchen noch schöner.. *g*</span></h1>");
-		out.println("</body>");
-		out.println("</html>");
-*/
+		/*
+		 * // ---------------------------------- // Output Response
+		 * 
+		 * // MIME-Typ der Antwort bestimmen
+		 * response.setContentType("text/html");
+		 * 
+		 * // Writer holen PrintWriter out = response.getWriter();
+		 * 
+		 * // HTML-Seite ausgeben out.println("<html>"); out.println("<head>");
+		 * out.println("<title>Test</title>"); out.println("</head>");
+		 * out.println("<body bgcolor=\"white\">"); out.println(
+		 * "<h1>Hello World_5f_Testen ist schön... <br /><span style=\"color:red;\">Fehler suchen noch schöner.. *g*</span></h1>"
+		 * ); out.println("</body>"); out.println("</html>");
+		 */
 	}
 
 	/**
