@@ -1,0 +1,17 @@
+Communication Structure:
+
+1. After Client starts up:
+	- Send "add name of this client"
+	- Ask for Topics
+	- Ask for Participants
+	- Ask for Messages to currently selected topic
+	
+2. When Client runs:
+	- When topic changes:
+		+ Ask for Messages to currently selected topic
+	
+3. When Buttons are pressed:
+	- (request according to button functionality)
+	
+4. When Client shuts down:
+	- Send "remove name of this client"
