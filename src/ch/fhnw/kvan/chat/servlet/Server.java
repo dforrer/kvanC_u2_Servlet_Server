@@ -33,9 +33,9 @@ public class Server extends HttpServlet {
 	 * Default constructor.
 	 */
 	public Server() {
-		System.out.println("Server-Constructor called.");
-		cr = ChatRoom.getInstance();
 		logger = Logger.getLogger(Server.class);
+		logger.info("Server-Constructor called.");
+		cr = ChatRoom.getInstance();
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class Server extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		String query = request.getQueryString();
-		System.out.println("query:" + query);
+		logger.info("query:" + query);
 
 		// ----------------------------------
 		// Parsing Query Params
@@ -69,7 +69,7 @@ public class Server extends HttpServlet {
 		Map<String, String[]> queryMap = request.getParameterMap();
 
 		for (Map.Entry<String, String[]> entry : queryMap.entrySet()) {
-			System.out.println(entry.getKey() + " = " + entry.getValue()[0]);
+			logger.info(entry.getKey() + " = " + entry.getValue()[0]);
 			switch (entry.getKey()) {
 			case "action":
 				action = entry.getValue()[0];
@@ -108,11 +108,11 @@ public class Server extends HttpServlet {
 		switch (action) {
 		case "addParticipant":
 			rv = cr.addParticipant(name); // Add client to model
-			System.out.println("addParticipant worked: " + rv);
+			logger.info("addParticipant worked: " + rv);
 			break;
 		case "removeParticipant":
 			rv = cr.removeParticipant(name); // Remove client from model
-			System.out.println("removeParticipant worked: " + rv);
+			logger.info("removeParticipant worked: " + rv);
 			break;
 		case "addTopic":
 			cr.addTopic(topic); // add topic to chatroom-model
