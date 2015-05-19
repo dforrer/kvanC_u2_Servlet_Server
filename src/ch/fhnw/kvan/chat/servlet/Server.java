@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import ch.fhnw.kvan.chat.general.ChatRoom;
 
 /**
@@ -24,6 +26,8 @@ public class Server extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private ChatRoom cr;
+	private static Logger logger;
+
 
 	/**
 	 * Default constructor.
@@ -31,6 +35,7 @@ public class Server extends HttpServlet {
 	public Server() {
 		System.out.println("Server-Constructor called.");
 		cr = ChatRoom.getInstance();
+		logger = Logger.getLogger(Server.class);
 	}
 
 	/**
